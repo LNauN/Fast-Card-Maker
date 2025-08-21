@@ -34,33 +34,33 @@ const ExportManager = (function() {
       const cardWidth = state.currentTemplate.width || 600;
       const cardHeight = state.currentTemplate.height || 800;
       const bleedSize = cardWidth * config.bleedRatio;
-      const newWidth = cardWidth + AppConfig.bleed.left + AppConfig.bleed.right;
-      const newHeight = cardHeight + AppConfig.bleed.top + AppConfig.bleed.bottom;
+      const { top: bleedTop, right: bleedRight, bottom: bleedBottom, left: bleedLeft } = AppConfig.bleed;
+      const totalWidth = cardWidth + bleedLeft + bleedRight;
+      const totalHeight = cardHeight + bleedTop + bleedBottom;
       
-      tempCanvas.width = newWidth;
-      tempCanvas.height = newHeight;
+      tempCanvas.width = totalWidth;
+      tempCanvas.height = totalHeight;
       
       // 1. 绘制扩展背景（包含出血区域）
-      tempCtx.fillStyle = config.solidColor;
-      tempCtx.fillRect(0, 0, newWidth, newHeight);
+      tempCtx.fillStyle = AppConfig.solidColor;
+      tempCtx.fillRect(0, 0, totalWidth, totalHeight);
       
       // 2. 绘制卡牌内容（偏移出血线位置）
       tempCtx.drawImage(
         state.canvas, 
-        bleedSize, // x偏移
-        bleedSize, // y偏移
+        bleedLeft,  // x坐标：左出血宽度
+        bleedTop,   // y坐标：上出血宽度
         cardWidth, 
         cardHeight
       );
       
       // 3. 绘制出血线和裁切标记
-      drawBleedElements(tempCtx, newWidth, newHeight, AppConfig.bleed, cardWidth, cardHeight);
+      drawBleedElements(tempCtx, totalWidth, totalHeight, AppConfig.bleed, cardWidth, cardHeight);
       
       // 4. 执行下载
       const link = document.createElement('a');
+      link.download = `card-${Date.now()}.png`;
       link.href = tempCanvas.toDataURL('image/png');
-      const fileName = `${state.currentTemplate.name || 'card'}_with_bleed_${Date.now()}.png`;
-      link.download = fileName;
       link.click();
       
       // 清理临时资源
