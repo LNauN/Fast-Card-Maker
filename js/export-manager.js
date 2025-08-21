@@ -34,8 +34,8 @@ const ExportManager = (function() {
       const cardWidth = state.currentTemplate.width || 600;
       const cardHeight = state.currentTemplate.height || 800;
       const bleedSize = cardWidth * config.bleedRatio;
-      const newWidth = cardWidth + bleedSize * 2;
-      const newHeight = cardHeight + bleedSize * 2;
+      const newWidth = cardWidth + AppConfig.bleed.left + AppConfig.bleed.right;
+      const newHeight = cardHeight + AppConfig.bleed.top + AppConfig.bleed.bottom;
       
       tempCanvas.width = newWidth;
       tempCanvas.height = newHeight;
@@ -54,7 +54,7 @@ const ExportManager = (function() {
       );
       
       // 3. 绘制出血线和裁切标记
-      drawBleedElements(ctx, canvasWidth, canvasHeight, bleed, cardWidth, cardHeight);
+      drawBleedElements(tempCtx, newWidth, newHeight, AppConfig.bleed, cardWidth, cardHeight);
       
       // 4. 执行下载
       const link = document.createElement('a');
@@ -77,12 +77,12 @@ const ExportManager = (function() {
     const { top: bleedTop, right: bleedRight, bottom: bleedBottom, left: bleedLeft } = bleed;
     const cardX = bleedLeft;
     const cardY = bleedTop;
-    const markLength = Math.max(Math.max(bleedTop, bleedRight, bleedBottom, bleedLeft) / 2, 5); // 确保标记可见
+    const markLength = Math.max(Math.max(bleedTop, bleedRight, bleedBottom, bleedLeft) / 2, 5);
     
     // 绘制出血区域边界（红色虚线）
     ctx.strokeStyle = config.bleedLineColor;
     ctx.lineWidth = 1;
-    ctx.setLineDash([5, 5]); // 虚线样式
+    ctx.setLineDash([5, 5]);
     ctx.beginPath();
     ctx.rect(cardX, cardY, cardWidth, cardHeight);
     ctx.stroke();
