@@ -14,6 +14,7 @@ const UIManager = (function() {
     
     bindEventListeners();
     setupOverlayContainer();
+    initBleedControls();
   }
 
   /**
@@ -616,6 +617,33 @@ const UIManager = (function() {
     
     const resetBtn = document.getElementById('resetBtn');
     if (resetBtn) resetBtn.disabled = true;
+  }
+
+  // 初始化出血线控制
+  function initBleedControls() {
+    const bleedInputs = {
+      top: document.getElementById('bleedTop'),
+      right: document.getElementById('bleedRight'),
+      bottom: document.getElementById('bleedBottom'),
+      left: document.getElementById('bleedLeft')
+    };
+
+    // 设置初始值
+    bleedInputs.top.value = AppConfig.bleed.top;
+    bleedInputs.right.value = AppConfig.bleed.right;
+    bleedInputs.bottom.value = AppConfig.bleed.bottom;
+    bleedInputs.left.value = AppConfig.bleed.left;
+
+    // 添加事件监听
+    Object.keys(bleedInputs).forEach(key => {
+      if (bleedInputs[key]) {
+        bleedInputs[key].addEventListener('input', (e) => {
+          const value = parseInt(e.target.value) || 0;
+          AppConfig.bleed[key] = value;
+          EventBus.emit('contentUpdated');
+        });
+      }
+    });
   }
 
   return {

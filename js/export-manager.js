@@ -54,7 +54,7 @@ const ExportManager = (function() {
       );
       
       // 3. 绘制出血线和裁切标记
-      drawBleedElements(tempCtx, newWidth, newHeight, bleedSize, cardWidth, cardHeight);
+      drawBleedElements(ctx, canvasWidth, canvasHeight, bleed, cardWidth, cardHeight);
       
       // 4. 执行下载
       const link = document.createElement('a');
@@ -72,10 +72,12 @@ const ExportManager = (function() {
   }
   
   // 绘制出血线和裁切标记
-  function drawBleedElements(ctx, canvasWidth, canvasHeight, bleedSize, cardWidth, cardHeight) {
-    const cardX = bleedSize;
-    const cardY = bleedSize;
-    const markLength = Math.max(bleedSize / 2, 5); // 确保标记可见
+  function drawBleedElements(ctx, canvasWidth, canvasHeight, bleed, cardWidth, cardHeight) {
+    // 使用四个方向的出血值
+    const { top: bleedTop, right: bleedRight, bottom: bleedBottom, left: bleedLeft } = bleed;
+    const cardX = bleedLeft;
+    const cardY = bleedTop;
+    const markLength = Math.max(Math.max(bleedTop, bleedRight, bleedBottom, bleedLeft) / 2, 5); // 确保标记可见
     
     // 绘制出血区域边界（红色虚线）
     ctx.strokeStyle = config.bleedLineColor;
@@ -138,9 +140,9 @@ const ExportManager = (function() {
     ctx.fillStyle = config.cropMarkColor;
     ctx.font = '10px Arial';
     ctx.textAlign = 'center';
-    const textY = Math.max(bleedSize / 2, 10); // 确保文字可见
+    const textY = Math.max(bleedTop / 2, 10); // 确保文字可见
     ctx.fillText(
-      `出血区域: ${(bleedSize * 0.264583).toFixed(1)}mm`, // 转换为毫米
+      `出血区域: 上${bleedTop}px 右${bleedRight}px 下${bleedBottom}px 左${bleedLeft}px`,
       canvasWidth / 2,
       textY
     );

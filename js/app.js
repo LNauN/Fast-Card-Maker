@@ -3,7 +3,13 @@ const AppConfig = {
   solidColor: '#ffffff',
   textBgColor: 'rgba(255, 255, 255, 0.8)',
   textBorderColor: 'rgba(0, 0, 0, 0.1)',
-  bleedRatio: 0.05,
+  // 修改为对象形式存储四个方向的出血线
+  bleed: {
+    top: 30,
+    right: 30,
+    bottom: 30,
+    left: 30
+  },
   bleedLineColor: '#FF5252',
   cropMarkColor: '#666666',
   fallbackImage: '/assets/images/fallback/default-template.png'
