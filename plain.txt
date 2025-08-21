@@ -1,0 +1,22 @@
+/
+├── index.html                   # 主页面
+├── js/
+│   ├── app.js                   # 应用入口，初始化所有模块
+│   ├── template-manager.js      # 模板管理（加载、选择、渲染）
+│   ├── canvas-manager.js        # 画布管理（绘制、渲染卡牌）
+│   ├── ui-manager.js            # UI管理（更新界面、用户交互）
+│   ├── image-processor.js       # 图片处理（上传、裁剪、变换）
+│   ├── text-processor.js        # 文本处理（渲染文本、处理输入）
+│   └── export-manager.js        # 导出管理（下载卡牌）
+└── assets/
+    ├── images/
+    │   ├── templates/
+    │   │   ├── standard-card/   # 标准卡牌模板图片
+    │   │   │   ├── thumbnail.png
+    │   │   │   ├── bg.png
+    │   │   │   └── frame.png
+    │   │   └── 其他模板/  # 同上
+    │   └── fallback/            # 降级图片
+    │       └── default-template.png
+    └── data/
+        └── templates.js         # 模板定义数据

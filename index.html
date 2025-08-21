@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>卡牌设计工具</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4F46E5',
+                        secondary: '#10B981',
+                        neutral: '#6B7280',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .template-item {
+                @apply cursor-pointer rounded-lg overflow-hidden border-2 transition-all duration-200;
+            }
+            .template-item.selected {
+                @apply border-primary shadow-md;
+            }
+            .upload-area {
+                @apply cursor-pointer transition-colors duration-200;
+            }
+            .editable-indicator {
+                @apply transition-all duration-200;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <div class="container mx-auto px-4 py-6 max-w-7xl">
+        <header class="mb-8">
+            <h1 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-gray-800">卡牌设计工具</h1>
+            <p class="text-gray-600 mt-1">选择模板，编辑内容，下载卡牌</p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- 左侧：模板选择 -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-xl shadow-sm p-5 mb-6">
+                    <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                        <i class="fa fa-th-large text-primary mr-2"></i>模板选择
+                    </h2>
+                    <div id="templateGallery" class="grid grid-cols-2 sm:grid-cols-3 gap-3 max-h-60 overflow-y-auto pr-1">
+                        <!-- 模板缩略图将通过JS动态生成 -->
+                        <div class="col-span-full text-center py-8 text-gray-500" id="templateLoading">
+                            <i class="fa fa-spinner fa-spin mr-2"></i>加载模板中...
+                        </div>
+                    </div>
+                    <div class="mt-4 text-sm text-gray-500">
+                        <p>选择一个模板开始设计</p>
+                    </div>
+                </div>
+
+                <!-- 文本编辑区域 -->
+                <div class="bg-white rounded-xl shadow-sm p-5 mb-6">
+                    <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                        <i class="fa fa-font text-primary mr-2"></i>文本内容
+                    </h2>
+                    <div id="textFieldsContainer" class="space-y-3">
+                        <p class="text-gray-500 text-sm italic">请先选择一个模板</p>
+                    </div>
+                </div>
+
+                <!-- 图片上传区域 -->
+                <div class="bg-white rounded-xl shadow-sm p-5">
+                    <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                        <i class="fa fa-picture-o text-primary mr-2"></i>图片上传
+                    </h2>
+                    <div id="imageUploadsContainer" class="space-y-4">
+                        <p class="text-gray-500 text-sm italic">请先选择一个模板</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧：预览和操作 -->
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-xl shadow-sm p-5 mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-lg font-semibold text-gray-800 flex items-center">
+                            <i class="fa fa-eye text-primary mr-2"></i>预览
+                        </h2>
+                        <div class="text-sm text-gray-600" id="cardDimensions">
+                            尺寸: -- × -- px
+                        </div>
+                    </div>
+                    
+                    <!-- 加载指示器 -->
+                    <div id="loadingIndicator" class="hidden flex justify-center items-center py-16">
+                        <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+                    </div>
+                    
+                    <!-- 画布容器 -->
+                    <div class="relative flex justify-center items-center bg-gray-100 p-4 rounded-lg min-h-[400px]">
+                        <canvas id="cardCanvas" class="max-w-full max-h-[600px] shadow-md"></canvas>
+                        <div id="editableAreasOverlay" class="absolute top-4 left-4 pointer-events-none"></div>
+                        <div id="noTemplateSelected" class="text-center text-gray-500">
+                            <i class="fa fa-image text-4xl mb-2"></i>
+                            <p>请从左侧选择一个模板</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 操作按钮 -->
+                <div class="flex flex-wrap gap-4">
+                    <button id="generateBtn" class="px-6 py-2.5 bg-primary text-white rounded-lg shadow hover:bg-primary/90 transition-colors flex items-center" disabled>
+                        <i class="fa fa-refresh mr-2"></i>更新预览
+                    </button>
+                    <button id="downloadBtn" class="px-6 py-2.5 bg-secondary text-white rounded-lg shadow hover:bg-secondary/90 transition-colors flex items-center" disabled>
+                        <i class="fa fa-download mr-2"></i>下载卡牌
+                    </button>
+                    <button id="resetBtn" class="px-6 py-2.5 bg-gray-200 text-gray-800 rounded-lg shadow hover:bg-gray-300 transition-colors flex items-center" disabled>
+                        <i class="fa fa-undo mr-2"></i>重置
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <footer class="mt-12 text-center text-gray-500 text-sm">
+            <p>卡牌设计工具 &copy; 2023</p>
+        </footer>
+    </div>
+
+    <!-- 脚本引用 -->
+    <script src="/assets/data/templates.js"></script>
+    <script src="/js/template-manager.js"></script>
+    <script src="/js/canvas-manager.js"></script>
+    <script src="/js/ui-manager.js"></script>
+    <script src="/js/image-processor.js"></script>
+    <script src="/js/text-processor.js"></script>
+    <script src="/js/export-manager.js"></script>
+    <script src="/js/app.js"></script>
+</body>
+</html>
