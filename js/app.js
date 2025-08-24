@@ -5,10 +5,10 @@ const AppConfig = {
   textBorderColor: 'rgba(0, 0, 0, 0.1)',
   // 修改为对象形式存储四个方向的出血线
   bleed: {
-    top: 30,
-    right: 30,
-    bottom: 30,
-    left: 30
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0
   },
   bleedLineColor: '#FF5252',
   cropMarkColor: '#666666',

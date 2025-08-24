@@ -361,18 +361,6 @@ const CanvasManager = (function() {
       skillItem.id,
       element.groupSpacing
     );
-
-    // 调用文本处理器绘制标题图层
-    TextProcessor.drawSkillTitleLayer(
-      skillItem.titleLayer,
-      element.groupX,
-      titleYPosition,
-      skillItem.titleWidth || 100,
-      skillItem.calculatedHeight || 0,
-      skillItem.padding || {},
-      skillItem.titleFontSize || 18,
-      skillItem.titleFontWeight
-    );
   }
 
   /**
