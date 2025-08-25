@@ -100,8 +100,8 @@ window.templateData = [
     id: 'character-card',
     name: '角色卡牌',
     thumbnailUrl: '/assets/images/templates/character-card/thumbnail.png',
-    width: 600,
-    height: 800,
+    width: 1417,
+    height: 827,
     contentLayers: {
       background: 10,
       midground: 50,
@@ -139,7 +139,8 @@ window.templateData = [
         align: 'left', 
         layer: 'midground',
         hasBackground: true,
-        lockPosition: 'top'
+        lockPosition: 'top',
+        fontFamliy: 'FZKATK'
       },
       { 
         id: 'character-title', 
@@ -165,7 +166,8 @@ window.templateData = [
         align: 'left', 
         layer: 'midground',
         hasBackground: false,
-        lockPosition: 'top'
+        lockPosition: 'top',
+        fontFamily: 'FZKATK',
       }
     ],
     imageAreas: [

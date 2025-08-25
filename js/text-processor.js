@@ -30,7 +30,11 @@ const TextProcessor = (function() {
       textArea.align || 'left',
       textArea.hasBackground || false,
       textArea.lockPosition,
-      textArea.bgColor
+      textArea.bgColor,
+      textArea.fontFamily || 'Arial, sans-serif',  // 字体家族
+      textArea.fontStyle || 'normal',              // 字体样式
+      textArea.fontWeight || 'normal',             // 字重
+      textArea.textColor || '#000000'            // 文本颜色
     );
   }
 
@@ -46,7 +50,7 @@ const TextProcessor = (function() {
     if (!state.canvasCtx || !text || width <= 0) return 0;
 
     const lineHeight = fontSize * lineHeightRatio;
-    const lines = splitTextIntoLines(text, width, fontSize);
+    const lines = splitTextIntoLines(text, width, fontSize, fontFamily);
     
     return lines.length * lineHeight;
   }
@@ -58,12 +62,12 @@ const TextProcessor = (function() {
    * @param {number} fontSize - 字体大小
    * @returns {string[]} 分割后的行数组
    */
-  function splitTextIntoLines(text, width, fontSize) {
+  function splitTextIntoLines(text, width, fontSize, fontFamily) {
     // 先按换行符分割
     const paragraphs = text.split(/\r\n|\r|\n/);
     const lines = [];
     
-    state.canvasCtx.font = `${fontSize}px Arial, sans-serif`;
+    state.canvasCtx.font = `${fontSize}px ${fontFamily}`;
     
     // 处理每个段落
     paragraphs.forEach(paragraph => {
@@ -107,32 +111,48 @@ const TextProcessor = (function() {
    * @param {string} bgColor - 背景颜色
    * @returns {Object} 包含实际高度和行数的对象
    */
-  function drawText(text, x, y, width, maxHeight, fontSize, align, hasBackground, lockPosition, bgColor) {
+  function drawText(
+    text, 
+    x, 
+    y, 
+    width, 
+    maxHeight, 
+    fontSize, 
+    align, 
+    hasBackground, 
+    lockPosition, 
+    bgColor,
+    fontFamily,  // 字体家族，默认Arial
+    fontStyle,              // 字体样式，默认正常
+    fontWeight,             // 字重，默认正常
+    textColor            // 字体颜色，默认黑色
+  ) {
     if (!state.canvasCtx || width <= 0) return { height: 0, lines: 0 };
 
     const displayText = text || '';
     const lineHeightRatio = DEFAULT_LINE_HEIGHT_RATIO;
     const lineHeight = fontSize * lineHeightRatio;
     
-    // 设置文本样式
-    state.canvasCtx.fillStyle = '#000000';
-    state.canvasCtx.font = `${fontSize}px Arial, sans-serif`;
+    // 设置文本样式 - 关键修改：使用传入的字体配置
+    state.canvasCtx.fillStyle = textColor;  // 改为使用传入的文本颜色
+    // 字体样式组合：样式 + 字重 + 大小 + 字体家族
+    state.canvasCtx.font = `${fontStyle} ${fontWeight} ${fontSize}px ${fontFamily}`;
     state.canvasCtx.textAlign = align || 'left';
 
-    // 计算文本换行
-    const lines = splitTextIntoLines(displayText, width, fontSize);
+    // 计算文本换行（保持原有逻辑）
+    const lines = splitTextIntoLines(displayText, width, fontSize, fontFamily);
     const linesToDraw = maxHeight ? Math.floor(maxHeight / lineHeight) : lines.length;
     const actualHeight = Math.min(linesToDraw * lineHeight, maxHeight || Infinity);
 
-    // 计算起始Y坐标（考虑锁定位置）
+    // 计算起始Y坐标（保持原有逻辑）
     let currentY = calculateStartY(y, fontSize, actualHeight, maxHeight, lockPosition);
 
-    // 绘制背景（如果需要）
+    // 绘制背景（如果需要，保持原有逻辑）
     if (hasBackground) {
       drawTextBackground(x, currentY, width, actualHeight, fontSize, bgColor);
     }
 
-    // 绘制文本
+    // 绘制文本（保持原有逻辑）
     drawTextLines(lines, linesToDraw, x, currentY, width, lineHeight, align);
 
     return { 
@@ -302,13 +322,22 @@ const TextProcessor = (function() {
             }
 
             // 绘制技能内容
-            drawSkillContent(
+          const contentDrawResult = drawText(
             itemContent,
             groupX + titleWidth + padding.left,
             groupY + padding.top,
             contentAreaWidth,
-            fontSize
-            );
+            contentHeight,
+            fontSize,
+            'left',
+            false, // 不使用背景
+            null,  // 不锁定位置
+            null,  // 无背景色
+            skillItem.fontFamily || 'Arial, sans-serif',  // 新增：字体家族
+            skillItem.fontStyle || 'normal',           // 新增：字体样式
+            skillItem.fontWeight || 'normal',          // 新增：字重
+            skillItem.textColor || '#000000'           // 新增：文本颜色
+          );
 
             skillItem.calculatedHeight = itemTotalHeight;
             return itemTotalHeight;
@@ -529,7 +558,11 @@ const TextProcessor = (function() {
       'left',
       false, // 不单独绘制背景
       null,
-      null
+      null,
+      fontFamily,           // 字体家族
+      fontStyle,           // 字体样式
+      fontWeight,         // 字重
+      textColor,         // 文本颜色
     );
   }
 
