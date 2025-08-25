@@ -135,17 +135,6 @@ const ExportManager = (function() {
     ctx.moveTo(cardX + cardWidth, cardY + cardHeight);
     ctx.lineTo(cardX + cardWidth, cardY + cardHeight + markLength);
     ctx.stroke();
-    
-    // 添加出血区域说明文字
-    ctx.fillStyle = config.cropMarkColor;
-    ctx.font = '10px Arial';
-    ctx.textAlign = 'center';
-    const textY = Math.max(bleedTop / 2, 10); // 确保文字可见
-    ctx.fillText(
-      `出血区域: 上${bleedTop}px 右${bleedRight}px 下${bleedBottom}px 左${bleedLeft}px`,
-      canvasWidth / 2,
-      textY
-    );
   }
   
   return {

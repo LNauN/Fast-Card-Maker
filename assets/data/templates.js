@@ -347,10 +347,18 @@ window.templateData = [
             fontSize: 16,
             titleFontSize: 18,
             titleFontWeight: 'bold',
+            fontFamily: 'FZKATK',
+            textColor: '#ff0000ff',
             hasBackground: true,
             bgColor: 'rgba(255, 255, 255, 0.7)',
             titleLayer: {
-              text: '技能一',
+              x: 10,
+              y: 5,
+              text: 'abc',
+              fontFamily: 'FZKATK', // 字体家族
+              fontSize: 20,         // 字体大小（覆盖默认）
+              fontWeight: 'bold',   // 字重
+              textColor: '#5900ffff',     // 文字颜色
               bgUrl: '/assets/images/templates/character-skill-card/title-bg-1.png',
               bgColor: 'rgba(255, 183, 77, 0.8)',
               zIndex: 60
@@ -374,6 +382,9 @@ window.templateData = [
             bgColor: 'rgba(255, 255, 255, 0.7)',
             titleLayer: {
               text: '技能二',
+              fontFamily: 'FZKATK',
+              fontSize: 20,
+              fontWeight: 'bold',
               bgUrl: '/assets/images/templates/character-skill-card/title-bg-2.png',
               bgColor: 'rgba(76, 175, 80, 0.8)',
               zIndex: 60

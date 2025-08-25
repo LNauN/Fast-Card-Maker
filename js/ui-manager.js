@@ -389,22 +389,6 @@ const UIManager = (function() {
             canvasOffsetX, canvasOffsetY, scaleX, scaleY
         );
         indicators.push(groupIndicator);
-
-        // 3. 为每个技能项创建边界框（使用固定标题区域计算）
-        group.items.forEach((skillItem, index) => {
-            if (!skillItem.id) return;
-            
-            const itemHeight = itemHeightList[index];
-            const itemIndicator = createSkillItemIndicator(
-            groupX, currentYPosition, groupWidth, itemHeight, skillItem.title,
-            canvasOffsetX, canvasOffsetY, scaleX, scaleY,
-            skillItem.titleWidth || 100 // 传递标题宽度
-            );
-            
-            indicators.push(itemIndicator);
-            currentYPosition += itemHeight + groupSpacing;
-        });
-
     return indicators;
     }
 

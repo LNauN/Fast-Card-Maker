@@ -50,7 +50,7 @@ const TextProcessor = (function() {
     if (!state.canvasCtx || !text || width <= 0) return 0;
 
     const lineHeight = fontSize * lineHeightRatio;
-    const lines = splitTextIntoLines(text, width, fontSize, fontFamily);
+    const lines = splitTextIntoLines(text, width, fontSize);
     
     return lines.length * lineHeight;
   }
@@ -287,10 +287,16 @@ const TextProcessor = (function() {
             const titleWidth = skillItem.titleWidth || 100;
             const padding = getNormalizedPadding(skillItem.padding);
             const fontSize = skillItem.fontSize || 16;
-            const titleFontSize = skillItem.titleFontSize || 18;
+            // 读取标题层配置（关键修复：获取标题的字体样式配置）
+            const titleLayer = skillItem.titleLayer || {};
+            const titleFontSize = titleLayer.fontSize || skillItem.titleFontSize || 18;
+            const titleFontFamily = titleLayer.fontFamily || skillItem.titleFontFamily || 'Arial, sans-serif';
+            const titleFontStyle = titleLayer.fontStyle || skillItem.titleFontStyle || 'normal';
+            const titleFontWeight = titleLayer.fontWeight || skillItem.titleFontWeight || 'normal';
+            const titleTextColor = titleLayer.textColor || skillItem.titleTextColor || '#000000';
 
-            // 关键修复：计算固定的标题区域高度（基于标题字体大小）
-            // 不再依赖技能项整体高度，而是基于标题字体大小的固定值
+            // 计算固定的标题区域高度（基于标题字体大小）
+            // 基于标题字体大小的固定值
             const fixedTitleHeight = titleFontSize * 1.8 + padding.top + padding.bottom;
 
             // 计算内容区域尺寸
@@ -310,34 +316,41 @@ const TextProcessor = (function() {
 
             // 绘制标题图层（使用固定高度）
             if (skillItem.titleLayer) {
-            drawSkillTitleLayer(
-                skillItem.titleLayer, 
-                groupX, groupY, 
-                titleWidth, 
-                fixedTitleHeight,  // 关键修复：使用固定标题高度而非项目总高度
-                padding, 
-                titleFontSize,
-                skillItem.titleFontWeight
-            );
+              // 提取标题相对位置（默认0,0）
+              const titleX = skillItem.titleLayer.x || 0;
+              const titleY = skillItem.titleLayer.y || 0;
+              
+              drawSkillTitleLayer(
+                  skillItem.titleLayer,  // titleConfig：包含所有标题层配置（包括字体样式）
+                  groupX, groupY,        // 坐标参数
+                  titleWidth,            // 标题宽度
+                  fixedTitleHeight,      // 固定标题高度（已修复）
+                  padding,               // 内边距
+                  titleLayer.fontSize || titleFontSize,  // 字号
+                  titleLayer.fontWeight || skillItem.titleFontWeight || 'bold', // 字重
+                  titleLayer.fontFamily || skillItem.fontFamily || 'Arial, sans-serif', // 新增：字体家族
+                  titleLayer.fontStyle || 'normal', // 新增：字体样式
+                  titleLayer.textColor || '#000000', // 新增：文本颜色（避免文字变白）
+              );
             }
 
             // 绘制技能内容
-          const contentDrawResult = drawText(
-            itemContent,
-            groupX + titleWidth + padding.left,
-            groupY + padding.top,
-            contentAreaWidth,
-            contentHeight,
-            fontSize,
-            'left',
-            false, // 不使用背景
-            null,  // 不锁定位置
-            null,  // 无背景色
-            skillItem.fontFamily || 'Arial, sans-serif',  // 新增：字体家族
-            skillItem.fontStyle || 'normal',           // 新增：字体样式
-            skillItem.fontWeight || 'normal',          // 新增：字重
-            skillItem.textColor || '#000000'           // 新增：文本颜色
-          );
+            const contentDrawResult = drawText(
+              itemContent,
+              groupX + titleWidth + padding.left,
+              groupY + padding.top,
+              contentAreaWidth,
+              contentHeight,
+              fontSize,
+              'left',
+              false, // 不使用背景
+              null,  // 不锁定位置
+              null,  // 无背景色
+              skillItem.fontFamily || 'Arial, sans-serif',  // 新增：字体家族
+              skillItem.fontStyle || 'normal',           // 新增：字体样式
+              skillItem.fontWeight || 'normal',          // 新增：字重
+              skillItem.textColor || '#000000'           // 新增：文本颜色
+            );
 
             skillItem.calculatedHeight = itemTotalHeight;
             return itemTotalHeight;
@@ -420,43 +433,59 @@ const TextProcessor = (function() {
     /**
      * 绘制技能标题图层（使用固定高度）
      */
-    function drawSkillTitleLayer(titleConfig, x, y, titleWidth, fixedTitleHeight, padding, fontSize, fontWeight) {
-        // 标题区域坐标和尺寸（完全固定）
-        const titleX = x + padding.left;
-        const titleY = y + padding.top;
-        const titleAreaWidth = titleWidth - padding.left - padding.right;
-        const titleAreaHeight = fixedTitleHeight - padding.top - padding.bottom; // 使用固定高度
+  // 修改text-processor.js中drawSkillTitleLayer函数的绘制逻辑
+  function drawSkillTitleLayer(
+      titleLayer, titleBoxX, titleBoxY, titleBoxWidth, titleBoxHeight,
+      padding, fontSize, fontWeight, fontFamily, fontStyle, textColor
+  ) {
+      const ctx = state.canvasCtx;
+      // 内容区域（标题框去除内边距后的实际范围）
+      const contentX = titleBoxX + padding.left;
+      const contentY = titleBoxY + padding.top;
+      const contentWidth = titleBoxWidth - padding.left - padding.right; // 与标题框宽度一致
+      const contentHeight = titleBoxHeight - padding.top - padding.bottom;
 
-        // 绘制标题背景（图片或颜色）
-        if (titleConfig.bgUrl) {
-            drawTitleBackgroundImage(
-            titleConfig.bgUrl, 
-            titleConfig.bgColor,
-            titleX, titleY,
-            titleAreaWidth, titleAreaHeight, // 使用固定尺寸
-            () => {
-                drawTitleText(
-                titleConfig.text, 
-                titleX, titleY,
-                titleAreaWidth, titleAreaHeight,
-                fontSize, fontWeight
-                );
-            }
-            );
-        } else {
-            drawTitleBackgroundColor(
-            titleConfig.bgColor,
-            titleX, titleY,
-            titleAreaWidth, titleAreaHeight // 使用固定尺寸
-            );
-            drawTitleText(
-            titleConfig.text, 
-            titleX, titleY,
-            titleAreaWidth, titleAreaHeight,
-            fontSize, fontWeight
-            );
-        }
-    }
+      // 1. 绘制背景图片（改为左对齐，与文字保持一致）
+      if (titleLayer.bgUrl) {
+          const bgImg = new Image();
+          bgImg.crossOrigin = 'Anonymous';
+          bgImg.onload = () => {
+              // 计算缩放（保持宽高比，但强制左对齐）
+              const imgRatio = bgImg.width / bgImg.height;
+              let drawWidth, drawHeight;
+
+              // 按内容区域高度缩放（确保高度填满，宽度自适应）
+              drawHeight = contentHeight;
+              drawWidth = drawHeight * imgRatio;
+
+              // 关键：左对齐绘制（x=contentX，不居中）
+              ctx.drawImage(bgImg, contentX, contentY, drawWidth, drawHeight);
+              drawTitleText();
+          };
+          bgImg.src = titleLayer.bgUrl;
+      } else {
+          // 绘制背景色（左对齐填充整个内容区域）
+          if (titleLayer.bgColor) {
+              ctx.fillStyle = titleLayer.bgColor;
+              ctx.fillRect(contentX, contentY, contentWidth, contentHeight); // 完整填充
+          }
+          drawTitleText();
+      }
+
+      // 2. 绘制标题文字（左对齐，与背景保持一致）
+      function drawTitleText() {
+          ctx.save();
+          ctx.font = `${fontStyle} ${fontWeight} ${fontSize}px ${fontFamily}`;
+          ctx.fillStyle = textColor;
+          ctx.textAlign = 'left'; // 明确左对齐
+          ctx.textBaseline = 'middle';
+
+          // 文字左对齐绘制（与背景左边界对齐）
+          const textY = contentY + contentHeight / 2; // 垂直居中
+          ctx.fillText(titleLayer.text || '', contentX, textY); // x=contentX（左对齐）
+          ctx.restore();
+      }
+  }
 
     /**
      * 绘制标题背景图片（固定尺寸，不缩放）
