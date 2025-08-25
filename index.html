@@ -68,7 +68,7 @@
             <p class="text-gray-600 mt-1">选择模板，编辑内容，下载卡牌</p>
         </header>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
             <!-- 左侧：模板选择 -->
             <div class="lg:col-span-1">
                 <div class="bg-white rounded-xl shadow-sm p-5 mb-6">
@@ -95,19 +95,9 @@
                         <p class="text-gray-500 text-sm italic">请先选择一个模板</p>
                     </div>
                 </div>
-
-                <!-- 图片上传区域 -->
-                <div class="bg-white rounded-xl shadow-sm p-5">
-                    <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-                        <i class="fa fa-picture-o text-primary mr-2"></i>图片上传
-                    </h2>
-                    <div id="imageUploadsContainer" class="space-y-4">
-                        <p class="text-gray-500 text-sm italic">请先选择一个模板</p>
-                    </div>
-                </div>
             </div>
 
-            <!-- 右侧：预览和操作 -->
+            <!-- 中间：预览和操作 -->
             <div class="lg:col-span-2">
                 <div class="bg-white rounded-xl shadow-sm p-5 mb-6">
                     <div class="flex justify-between items-center mb-4">
@@ -168,6 +158,19 @@
                     <input type="number" id="bleedLeft" class="w-full p-1.5 border border-gray-300 rounded text-sm" value="30" min="0" max="100">
                     </div>
                 </div>
+                </div>
+            </div>
+            
+            <!-- 右侧：上传图片 -->
+            <div class="lg:col-span-1">
+                <!-- 图片上传区域 -->
+                <div class="bg-white rounded-xl shadow-sm p-5">
+                    <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                        <i class="fa fa-picture-o text-primary mr-2"></i>图片上传
+                    </h2>
+                    <div id="imageUploadsContainer" class="space-y-4">
+                        <p class="text-gray-500 text-sm italic">请先选择一个模板</p>
+                    </div>
                 </div>
             </div>
         </div>

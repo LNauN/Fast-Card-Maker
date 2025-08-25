@@ -6,6 +6,11 @@ window.templateData = [
     thumbnailUrl: '/assets/images/templates/standard-card/thumbnail.png',
     width: 600,
     height: 800,
+    bleedBackground: {
+      url: '/assets/images/templates/standard-card/bleed-bg.png', // 主背景图路径
+      fillMode: 'cover', // 填充模式：cover（覆盖）/ contain（包含）
+      repeat: false // 是否重复填充（可选）
+    },
     contentLayers: {
       background: 10,
       midground: 50,
@@ -102,6 +107,11 @@ window.templateData = [
     thumbnailUrl: '/assets/images/templates/character-card/thumbnail.png',
     width: 1417,
     height: 827,
+    bleedBackground: {
+      url: '/assets/images/templates/character-card/bleed-bg.png', // 主背景图路径
+      fillMode: 'cover', // 填充模式：cover（覆盖）/ contain（包含）
+      repeat: false // 是否重复填充（可选）
+    },
     contentLayers: {
       background: 10,
       midground: 50,
@@ -136,9 +146,10 @@ window.templateData = [
         height: 60, 
         placeholder: '角色名称', 
         fontSize: 32, 
+        textColor: '#ff00ff',
         align: 'left', 
-        layer: 'midground',
-        hasBackground: true,
+        layer: '50',
+        hasBackground: false,
         lockPosition: 'top',
         fontFamliy: 'FZKATK'
       },
@@ -152,6 +163,7 @@ window.templateData = [
         fontSize: 18, 
         align: 'left', 
         layer: 'midground',
+        textColor: '#ff00ff',
         hasBackground: false,
         lockPosition: 'top'
       },
@@ -200,6 +212,11 @@ window.templateData = [
     thumbnailUrl: '/assets/images/templates/item-card/thumbnail.png',
     width: 600,
     height: 800,
+    bleedBackground: {
+      url: '/assets/images/templates/item-card/bleed-bg.png', // 主背景图路径
+      fillMode: 'cover', // 填充模式：cover（覆盖）/ contain（包含）
+      repeat: false // 是否重复填充（可选）
+    },
     contentLayers: {
       background: 10,
       midground: 50,
@@ -279,6 +296,11 @@ window.templateData = [
     thumbnailUrl: '/assets/images/templates/character-skill-card/thumbnail.png',
     width: 600,
     height: 800,
+    bleedBackground: {
+      url: '/assets/images/templates/character-skill-card/bleed-bg.png', // 主背景图路径
+      fillMode: 'cover', // 填充模式：cover（覆盖）/ contain（包含）
+      repeat: false // 是否重复填充（可选）
+    },
     contentLayers: {
       background: 10,
       midground: 50,

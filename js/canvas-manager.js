@@ -89,9 +89,7 @@ const CanvasManager = (function() {
     // 显示加载状态
     UIManager.showLoadingState();
 
-    // 使用setTimeout避免UI阻塞
-    setTimeout(() => {
-      try {
+    try {
         // 清除画布
         clearCanvas();
 
@@ -113,7 +111,6 @@ const CanvasManager = (function() {
         // 隐藏加载状态
         UIManager.hideLoadingState();
       }
-    }, 100);
   }
 
   /**
@@ -388,6 +385,17 @@ const CanvasManager = (function() {
    */
   function renderTemplateLayer(layer) {
     if (!layer.image) return;
+
+    // 检查图片是否已加载完成
+    if (!layer.image.complete) {
+      // 图片加载完成后重新渲染
+      const onLoad = () => {
+        layer.image.removeEventListener('load', onLoad);
+        renderCard(); // 重新触发渲染
+      };
+      layer.image.addEventListener('load', onLoad);
+      return; // 本次渲染跳过未加载的图片
+    }
 
     // 确保坐标和尺寸为有效数字
     const x = typeof layer.x === 'number' ? layer.x : 0;

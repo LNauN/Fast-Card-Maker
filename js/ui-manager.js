@@ -15,6 +15,10 @@ const UIManager = (function() {
     bindEventListeners();
     setupOverlayContainer();
     initBleedControls();
+
+    eventBus.on('layersLoaded', () => {
+      showEditableRegions();
+    });
   }
 
   /**
@@ -269,37 +273,39 @@ const UIManager = (function() {
     
     overlayEl.innerHTML = '';
     
-    // 获取画布位置和尺寸信息
-    const canvasRect = canvasEl.getBoundingClientRect();
-    const containerRect = canvasEl.parentElement.getBoundingClientRect();
-    
-    // 计算画布在容器内的偏移和缩放比例
-    const canvasOffsetX = canvasRect.left - containerRect.left;
-    const canvasOffsetY = canvasRect.top - containerRect.top;
-    const scaleX = canvasRect.width / canvasEl.width;
-    const scaleY = canvasRect.height / canvasEl.height;
-    
-    // 显示文字区域边界框
-    (state.currentTemplate.textAreas || []).forEach(area => {
-      overlayEl.appendChild(
-        createTextAreaIndicator(area, canvasOffsetX, canvasOffsetY, scaleX, scaleY)
-      );
-    });
-    
-    // 显示技能组边界框
-    (state.currentTemplate.verticalGroups || []).forEach(group => {
-      const groupElements = createVerticalGroupIndicators(
-        group, canvasOffsetX, canvasOffsetY, scaleX, scaleY
-      );
+    requestAnimationFrame(() => {
+      // 获取画布位置和尺寸信息
+      const canvasRect = canvasEl.getBoundingClientRect();
+      const containerRect = canvasEl.parentElement.getBoundingClientRect();
       
-      groupElements.forEach(el => overlayEl.appendChild(el));
-    });
-    
-    // 显示图片区域边界框
-    (state.currentTemplate.imageAreas || []).forEach(area => {
-      overlayEl.appendChild(
-        createImageAreaIndicator(area, canvasOffsetX, canvasOffsetY, scaleX, scaleY)
-      );
+      // 计算画布在容器内的偏移和缩放比例
+      const canvasOffsetX = canvasRect.left - containerRect.left;
+      const canvasOffsetY = canvasRect.top - containerRect.top;
+      const scaleX = canvasRect.width / canvasEl.width;
+      const scaleY = canvasRect.height / canvasEl.height;
+      
+      // 显示文字区域边界框
+      (state.currentTemplate.textAreas || []).forEach(area => {
+        overlayEl.appendChild(
+          createTextAreaIndicator(area, canvasOffsetX, canvasOffsetY, scaleX, scaleY)
+        );
+      });
+      
+      // 显示技能组边界框
+      (state.currentTemplate.verticalGroups || []).forEach(group => {
+        const groupElements = createVerticalGroupIndicators(
+          group, canvasOffsetX, canvasOffsetY, scaleX, scaleY
+        );
+        
+        groupElements.forEach(el => overlayEl.appendChild(el));
+      });
+      
+      // 显示图片区域边界框
+      (state.currentTemplate.imageAreas || []).forEach(area => {
+        overlayEl.appendChild(
+          createImageAreaIndicator(area, canvasOffsetX, canvasOffsetY, scaleX, scaleY)
+        );
+      });
     });
   }
 
@@ -627,6 +633,42 @@ const UIManager = (function() {
           EventBus.emit('contentUpdated');
         });
       }
+    });
+  }
+
+  /**
+   * 更新技能组的可编辑区域指示器
+   * @param {Object} group - 技能组配置（verticalGroups 中的项）
+   */
+  function updateSkillGroupIndicators(group) {
+    const overlay = document.getElementById('editableAreasOverlay');
+    if (!overlay || !group || !group.items) return;
+
+    // 清除该组旧的指示器（通过特定类名标识）
+    document.querySelectorAll(`.skill-indicator-${group.id}`).forEach(el => el.remove());
+
+    let currentY = group.y; // 起始Y坐标（从组配置获取）
+    const groupX = group.x;
+    const groupWidth = group.width;
+    const spacing = group.spacing || 15; // 技能项间距
+
+    group.items.forEach((item, index) => {
+      // 使用动态计算的高度（从状态获取）
+      const itemHeight = state.skillItemHeights?.[item.id] || 50; // 默认高度兜底
+
+      // 创建指示器元素
+      const indicator = document.createElement('div');
+      indicator.className = `editable-indicator skill-indicator-${group.id} absolute border-2 border-dashed border-primary`;
+      indicator.style.left = `${groupX}px`;
+      indicator.style.top = `${currentY}px`;
+      indicator.style.width = `${groupWidth}px`;
+      indicator.style.height = `${itemHeight}px`;
+      indicator.title = `技能项 ${index + 1}`;
+
+      overlay.appendChild(indicator);
+
+      // 累加高度和间距，计算下一个技能项的起始Y坐标
+      currentY += itemHeight + spacing;
     });
   }
 

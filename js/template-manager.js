@@ -66,11 +66,6 @@ const TemplateManager = (function() {
       
       templateItem.addEventListener('click', () => selectTemplate(template));
     });
-    
-    // 默认选择第一个模板
-    if (templateList.length > 0) {
-      selectTemplate(templateList[0]);
-    }
   }
   
   // 选择模板
@@ -101,6 +96,9 @@ const TemplateManager = (function() {
     
     // 触发模板选择事件
     eventBus.emit('templateSelected', template);
+
+    // 新增：自动加载选中模板的图层
+    loadTemplateLayers(template);
   }
   
   // 加载模板图层
@@ -135,6 +133,8 @@ const TemplateManager = (function() {
     return Promise.all(loadPromises)
       .then(() => {
         UIManager.hideLoadingState();
+        // 图层加载完成后触发重新计算指示器
+        eventBus.emit('layersLoaded');
       })
       .catch(error => {
         console.error('图层加载过程出错:', error);

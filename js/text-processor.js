@@ -353,6 +353,11 @@ const TextProcessor = (function() {
             );
 
             skillItem.calculatedHeight = itemTotalHeight;
+            
+            // 将计算后的高度保存到全局状态（假设 state 可访问）
+            if (!state.skillItemHeights) state.skillItemHeights = {};
+            state.skillItemHeights[skillItem.id] = itemTotalHeight;
+
             return itemTotalHeight;
         } catch (error) {
             console.error('绘制技能项时出错:', error);
