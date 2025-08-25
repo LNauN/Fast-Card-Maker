@@ -113,8 +113,8 @@ window.templateData = [
         url: '/assets/images/templates/character-card/bg.png',
         x: 0,
         y: 0,
-        width: 600,
-        height: 800,
+        width: 1417,
+        height: 827,
         zIndex: 5
       },
       {
@@ -122,8 +122,8 @@ window.templateData = [
         url: '/assets/images/templates/character-card/frame.png',
         x: 0,
         y: 0,
-        width: 600,
-        height: 800,
+        width: 1417,
+        height: 827,
         zIndex: 100
       }
     ],
