@@ -102,7 +102,7 @@ const TemplateManager = (function() {
   }
   
   // 加载模板图层
-  function loadTemplateLayers(template) {
+  async function loadTemplateLayers(template) {
     if (!template || !Array.isArray(template.layers)) return Promise.resolve();
     
     // 按zIndex排序图层
@@ -110,6 +110,17 @@ const TemplateManager = (function() {
     
     const loadPromises = sortedLayers.map(layer => {
       return new Promise((resolve) => {
+        if (layer.type === 'text') {
+          // 直接将文字图层添加到渲染队列，无需加载图片
+          state.templateLayers.push({
+            ...layer,
+            type: 'text', // 明确标识为文字图层
+            // 可补充文字相关默认属性（如字体、颜色等）
+          });
+          resolve();
+          return;
+        }
+
         if (!layer.url) {
           console.warn('图层URL不存在，将跳过');
           resolve();
@@ -130,16 +141,15 @@ const TemplateManager = (function() {
       });
     });
     
-    return Promise.all(loadPromises)
-      .then(() => {
-        UIManager.hideLoadingState();
-        // 图层加载完成后触发重新计算指示器
-        eventBus.emit('layersLoaded');
-      })
-      .catch(error => {
-        console.error('图层加载过程出错:', error);
-        UIManager.hideLoadingState();
-      });
+    try {
+      await Promise.all(loadPromises);
+      UIManager.hideLoadingState();
+      // 图层加载完成后触发重新计算指示器
+      eventBus.emit('layersLoaded');
+    } catch (error) {
+      console.error('图层加载过程出错:', error);
+      UIManager.hideLoadingState();
+    }
   }
   
   // 获取当前模板

@@ -113,6 +113,32 @@ const CanvasManager = (function() {
       }
   }
 
+  /** 
+  *渲染固定文字层
+   */
+  function renderFixedTexts(fixedTextElement) {
+    const { area, content } = fixedTextElement; // 从新结构中提取area和content
+    if (!area || !content || !state.canvasCtx) return;
+
+    // 调用方式与普通文本保持一致（参数顺序和含义对齐）
+    TextProcessor.drawText(
+      content, // 文字内容
+      area.x,
+      area.y,
+      area.width,
+      area.height,
+      area.fontSize,
+      area.align,
+      false, // 无背景
+      null, // 不锁定
+      null, // 无背景色
+      area.fontFamily,
+      area.fontStyle,
+      area.fontWeight,
+      area.textColor
+    );
+  }
+
   /**
    * 清除画布
    */
@@ -206,6 +232,11 @@ const CanvasManager = (function() {
       // 4. 添加图片区域
       if (Array.isArray(state.currentTemplate.imageAreas)) {
         addImageAreas(elements);
+      }
+
+      // 5.添加固定文字层
+      if (Array.isArray(state.currentTemplate.fixedTexts)) {
+        addFixedTextAreas(elements);
       }
 
       // 按z-index排序（确保标题图层在正确层级）
@@ -304,6 +335,33 @@ const CanvasManager = (function() {
   }
 
   /**
+   * 添加固定文字层到元素数组
+   * @param {Array} elements -元素数组
+   */
+  function addFixedTextAreas(elements){
+    (state.currentTemplate.fixedTexts || []).forEach(fixedText => {
+      // 与text类型保持一致的结构：area存储位置/样式，content存储文字内容
+      elements.push({
+        type: 'fixed-text',
+        zIndex: fixedText.zIndex || 60, // 提高层级避免被覆盖（比text类型的50高）
+        area: {
+          x: fixedText.x || 0,
+          y: fixedText.y || 0,
+          width: fixedText.width || 0,
+          height: fixedText.height || 0,
+          fontSize: fixedText.fontSize || 16,
+          fontFamily: fixedText.fontFamily || 'Arial, sans-serif',
+          fontStyle: fixedText.fontStyle || 'normal',
+          fontWeight: fixedText.fontWeight || 'normal',
+          align: fixedText.align || 'left',
+          textColor: fixedText.textColor || '#000000'
+        },
+        content: fixedText.content || '' // 单独提取内容，与text类型一致
+      });
+    });
+  }
+
+  /**
    * 渲染所有元素
    * @param {Array} elements - 要渲染的元素数组
    */
@@ -337,6 +395,10 @@ const CanvasManager = (function() {
             
           case 'skill-title-layer':
             renderSkillTitleLayer(element);
+            break;
+
+          case 'fixed-text':
+            renderFixedTexts(element);
             break;
         }
       } catch (error) {

@@ -133,6 +133,7 @@ const ExportManager = (function() {
     const cardY = bleedTop;
     const markLength = Math.max(Math.max(bleedTop, bleedRight, bleedBottom, bleedLeft) / 2, 5);
     
+    /* 
     // 绘制出血区域边界（红色虚线）
     ctx.strokeStyle = config.bleedLineColor;
     ctx.lineWidth = 1;
@@ -140,6 +141,7 @@ const ExportManager = (function() {
     ctx.beginPath();
     ctx.rect(cardX, cardY, cardWidth, cardHeight);
     ctx.stroke();
+    */
     
     // 绘制裁切标记（四角的实线标记）
     ctx.strokeStyle = config.cropMarkColor;
@@ -251,6 +253,7 @@ const ExportManager = (function() {
   
   return {
     init,
-    downloadCardWithBleed
+    downloadCardWithBleed,
+    drawBleedBackground
   };
 })();

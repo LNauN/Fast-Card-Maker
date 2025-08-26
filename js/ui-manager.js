@@ -15,6 +15,7 @@ const UIManager = (function() {
     bindEventListeners();
     setupOverlayContainer();
     initBleedControls();
+    initIndicatorToggle();
 
     eventBus.on('layersLoaded', () => {
       showEditableRegions();
@@ -40,6 +41,21 @@ const UIManager = (function() {
         eventBus.emit('resetCard');
       });
     }
+  }
+
+  // 添加切换指示器显示状态的方法
+  function toggleIndicators() {
+      const isHidden = elements.editableAreasOverlay.classList.contains('hidden');
+      
+      if (isHidden) {
+          // 显示指示器
+          elements.editableAreasOverlay.classList.remove('hidden');
+          elements.toggleIndicatorsBtn.innerHTML = '<i class="fa fa-eye-slash mr-2"></i>隐藏指示器';
+      } else {
+          // 隐藏指示器
+          elements.editableAreasOverlay.classList.add('hidden');
+          elements.toggleIndicatorsBtn.innerHTML = '<i class="fa fa-eye mr-2"></i>显示指示器';
+      }
   }
 
   /**
@@ -333,8 +349,6 @@ const UIManager = (function() {
     
     // 添加标签
     const labelParts = [area.placeholder || '文本区域'];
-    if (area.hasBackground) labelParts.push('带底框');
-    if (area.lockPosition) labelParts.push(area.lockPosition === 'top' ? '锁定顶部' : '锁定底部');
     
     const label = document.createElement('div');
     label.className = 'absolute bottom-1 left-0 right-0 text-center text-xs bg-primary/80 text-white px-1 rounded';
@@ -587,6 +601,10 @@ const UIManager = (function() {
     
     const resetBtn = document.getElementById('resetBtn');
     if (resetBtn) resetBtn.disabled = false;
+
+    // 新增：启用指示器切换按钮
+    const toggleBtn = document.getElementById('toggleIndicatorsBtn');
+    if (toggleBtn) toggleBtn.disabled = false;
     
     // 隐藏"未选择模板"提示
     const noTemplateEl = document.getElementById('noTemplateSelected');
@@ -604,9 +622,36 @@ const UIManager = (function() {
     
     const downloadBtn = document.getElementById('downloadBtn');
     if (downloadBtn) downloadBtn.disabled = true;
+
+    // 新增：禁用指示器切换按钮
+    const toggleBtn = document.getElementById('toggleIndicatorsBtn');
+    if (toggleBtn) toggleBtn.disabled = true;
     
     const resetBtn = document.getElementById('resetBtn');
     if (resetBtn) resetBtn.disabled = true;
+  }
+
+  // 切换指示器显示状态
+  function initIndicatorToggle() {
+    const toggleBtn = document.getElementById('toggleIndicatorsBtn');
+    const indicatorsOverlay = document.getElementById('editableAreasOverlay');
+    
+    if (!toggleBtn || !indicatorsOverlay) return;
+    
+    // 初始化状态（默认显示指示器）
+    toggleBtn.addEventListener('click', () => {
+      const isHidden = indicatorsOverlay.classList.contains('hidden');
+      
+      if (isHidden) {
+        // 显示指示器
+        indicatorsOverlay.classList.remove('hidden');
+        toggleBtn.innerHTML = '<i class="fa fa-eye-slash mr-2"></i>隐藏指示器';
+      } else {
+        // 隐藏指示器
+        indicatorsOverlay.classList.add('hidden');
+        toggleBtn.innerHTML = '<i class="fa fa-eye mr-2"></i>显示指示器';
+      }
+    });
   }
 
   // 初始化出血线控制
