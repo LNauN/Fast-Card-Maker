@@ -80,7 +80,7 @@ window.templateData = [
         zIndex: 50
       },
       {
-        id: '52-basic-info',
+        id: '52-init-text',
         url: 'assets/images/templates/character-card/52-init-text.png',
         x: 0,
         y: 0,
@@ -129,7 +129,7 @@ window.templateData = [
         hasBackground: false,
         lockPosition: 'top'
       },
-            { 
+      { 
         id: 'MP', 
         x: 1040, 
         y: 320, 
@@ -323,6 +323,492 @@ window.templateData = [
         placeholder: '角色图',
         shape: 'rectangle', 
         layer: 'characterPicture'
+      }
+    ]
+  },
+
+  {
+    id: 'basic-card',
+    name: '基础卡牌',
+    thumbnailUrl: '/assets/images/templates/basic-card/thumbnail.png',
+    width: 898,
+    height: 1371,
+    bleedBackground: {
+      url: '/assets/images/templates/basic-card/bleed-bg.png', // 主背景图路径
+      fillMode: 'cover', // 填充模式：cover（覆盖）/ contain（包含）
+      repeat: false // 是否重复填充（可选）
+    },
+    contentLayers: {
+      cardPicture: 8,
+      default: 55,
+    },
+    layers: [
+      {
+        id: '1-bg',
+        url: '/assets/images/templates/basic-card/1-bg.png',
+        x: 0,
+        y: 0,
+        width: 898,
+        height: 1371,
+        zIndex: 1
+      },
+      {
+        id: '5-picture-frame-bottom',
+        url: '/assets/images/templates/basic-card/5-picture-frame-bottom.png',
+        x: 0,
+        y: 0,
+        width: 898,
+        height: 1371,
+        zIndex: 5
+      },
+      {
+        id: '10-picture-frame-top',
+        url: '/assets/images/templates/basic-card/10-picture-frame-top.png',
+        x: 0,
+        y: 0,
+        width: 898,
+        height: 1371,
+        zIndex: 10
+      },
+      {
+        id: '20-info-backboard',
+        url: 'assets/images/templates/basic-card/20-info-backboard.png',
+        x: 0,
+        y: 0,
+        width: 898,
+        height: 1371,
+        zIndex: 20
+      },
+      {
+        id: '30-hexdeco',
+        url: 'assets/images/templates/basic-card/30-hexdeco.png',
+        x: 0,
+        y: 0,
+        width: 898,
+        height: 1371,
+        zIndex: 30
+      },
+      {
+        id: '40-info-bg',
+        url: 'assets/images/templates/basic-card/40-info-bg.png',
+        x: 0,
+        y: 0,
+        width: 898,
+        height: 1371,
+        zIndex: 40
+      },
+      {
+        id: '50-basic-info',
+        url: 'assets/images/templates/basic-card/50-basic-info.png',
+        x: 0,
+        y: 0,
+        width: 898,
+        height: 1371,
+        zIndex: 50
+      },
+      {
+        id: '52-init-text',
+        url: 'assets/images/templates/basic-card/52-init-text.png',
+        x: 0,
+        y: 0,
+        width: 898,
+        height: 1371,
+        zIndex: 52
+      },
+            {
+        id: '60-frame',
+        url: 'assets/images/templates/basic-card/60-frame.png',
+        x: 0,
+        y: 0,
+        width: 898,
+        height: 1371,
+        zIndex: 60
+      }
+    ],
+    textAreas: [
+      { 
+        id: 'card-name', 
+        x: 300, 
+        y: 520, 
+        width: 500, 
+        height: 100, 
+        placeholder: '卡牌名称', 
+        fontFamily: 'SSZHJT',
+        fontSize: 75, 
+        textColor: '#000000ff',
+        align: 'left', 
+        layer: 'default',
+        hasBackground: false,
+        lockPosition: 'top',
+      },
+      {
+        id: 'card-cost', 
+        x: 240, 
+        y: 705, 
+        width: 100, 
+        height: 90, 
+        placeholder: '卡牌消耗', 
+        fontFamily: 'FZZHYJF',
+        fontSize: 70, 
+        textColor: '#000000ff',
+        align: 'left', 
+        layer: 'default',
+        hasBackground: false,
+        lockPosition: 'top',
+      },
+      { 
+        id: 'card-info', 
+        x: 110, 
+        y: 820, 
+        width: 680, 
+        height: 465, 
+        placeholder: '卡牌描述', 
+        fontSize: 35, 
+        align: 'left', 
+        layer: 'default',
+        hasBackground: false,
+        lockPosition: 'top',
+      },
+    ],
+    imageAreas: [
+      { 
+        id: 'card-illustration', 
+        x: 75, 
+        y: 75, 
+        width: 750, 
+        height: 500, 
+        placeholder: '卡牌插图',
+        shape: 'rectangle', 
+        layer: 'cardPicture'
+      }
+    ]
+  },
+  
+  {
+    id: 'effect-card',
+    name: '效果卡牌',
+    thumbnailUrl: '/assets/images/templates/effect-card/thumbnail.png',
+    width: 898,
+    height: 1371,
+    bleedBackground: {
+      url: '/assets/images/templates/effect-card/bleed-bg.png', // 主背景图路径
+      fillMode: 'cover', // 填充模式：cover（覆盖）/ contain（包含）
+      repeat: false // 是否重复填充（可选）
+    },
+    contentLayers: {
+      cardPicture: 8,
+      default: 55,
+    },
+    layers: [
+      {
+        id: '1-bg',
+        url: '/assets/images/templates/effect-card/1-bg.png',
+        x: 0,
+        y: 0,
+        width: 898,
+        height: 1371,
+        zIndex: 1
+      },
+      {
+        id: '5-picture-frame-bottom',
+        url: '/assets/images/templates/effect-card/5-picture-frame-bottom.png',
+        x: 0,
+        y: 0,
+        width: 898,
+        height: 1371,
+        zIndex: 5
+      },
+      {
+        id: '10-picture-frame-top',
+        url: '/assets/images/templates/effect-card/10-picture-frame-top.png',
+        x: 0,
+        y: 0,
+        width: 898,
+        height: 1371,
+        zIndex: 10
+      },
+      {
+        id: '20-info-backboard',
+        url: 'assets/images/templates/effect-card/20-info-backboard.png',
+        x: 0,
+        y: 0,
+        width: 898,
+        height: 1371,
+        zIndex: 20
+      },
+      {
+        id: '30-hexdeco',
+        url: 'assets/images/templates/effect-card/30-hexdeco.png',
+        x: 0,
+        y: 0,
+        width: 898,
+        height: 1371,
+        zIndex: 30
+      },
+      {
+        id: '40-info-bg',
+        url: 'assets/images/templates/effect-card/40-info-bg.png',
+        x: 0,
+        y: 0,
+        width: 898,
+        height: 1371,
+        zIndex: 40
+      },
+      {
+        id: '50-basic-info',
+        url: 'assets/images/templates/effect-card/50-basic-info.png',
+        x: 0,
+        y: 0,
+        width: 898,
+        height: 1371,
+        zIndex: 50
+      },
+      {
+        id: '52-init-text',
+        url: 'assets/images/templates/effect-card/52-init-text.png',
+        x: 0,
+        y: 0,
+        width: 898,
+        height: 1371,
+        zIndex: 52
+      },
+            {
+        id: '60-frame',
+        url: 'assets/images/templates/effect-card/60-frame.png',
+        x: 0,
+        y: 0,
+        width: 898,
+        height: 1371,
+        zIndex: 60
+      }
+    ],
+    textAreas: [
+      { 
+        id: 'card-name', 
+        x: 300, 
+        y: 520, 
+        width: 500, 
+        height: 100, 
+        placeholder: '卡牌名称', 
+        fontFamily: 'SSZHJT',
+        fontSize: 75, 
+        textColor: '#000000ff',
+        align: 'left', 
+        layer: 'default',
+        hasBackground: false,
+        lockPosition: 'top',
+      },
+      {
+        id: 'card-cost', 
+        x: 240, 
+        y: 705, 
+        width: 100, 
+        height: 90, 
+        placeholder: '卡牌消耗', 
+        fontFamily: 'FZZHYJF',
+        fontSize: 70, 
+        textColor: '#000000ff',
+        align: 'left', 
+        layer: 'default',
+        hasBackground: false,
+        lockPosition: 'top',
+      },
+      { 
+        id: 'card-info', 
+        x: 110, 
+        y: 820, 
+        width: 680, 
+        height: 465, 
+        placeholder: '卡牌描述', 
+        fontSize: 35, 
+        align: 'left', 
+        layer: 'default',
+        hasBackground: false,
+        lockPosition: 'top',
+      },
+    ],
+    imageAreas: [
+      { 
+        id: 'card-illustration', 
+        x: 75, 
+        y: 75, 
+        width: 750, 
+        height: 500, 
+        placeholder: '卡牌插图',
+        shape: 'rectangle', 
+        layer: 'cardPicture'
+      }
+    ]
+  },
+
+  {
+    id: 'prop-card',
+    name: '道具卡牌',
+    thumbnailUrl: '/assets/images/templates/prop-card/thumbnail.png',
+    width: 898,
+    height: 1371,
+    bleedBackground: {
+      url: '/assets/images/templates/prop-card/bleed-bg.png', // 主背景图路径
+      fillMode: 'cover', // 填充模式：cover（覆盖）/ contain（包含）
+      repeat: false // 是否重复填充（可选）
+    },
+    contentLayers: {
+      cardPicture: 8,
+      default: 55,
+    },
+    layers: [
+      {
+        id: '1-bg',
+        url: '/assets/images/templates/prop-card/1-bg.png',
+        x: 0,
+        y: 0,
+        width: 898,
+        height: 1371,
+        zIndex: 1
+      },
+      {
+        id: '5-picture-frame-bottom',
+        url: '/assets/images/templates/prop-card/5-picture-frame-bottom.png',
+        x: 0,
+        y: 0,
+        width: 898,
+        height: 1371,
+        zIndex: 5
+      },
+      {
+        id: '10-picture-frame-top',
+        url: '/assets/images/templates/prop-card/10-picture-frame-top.png',
+        x: 0,
+        y: 0,
+        width: 898,
+        height: 1371,
+        zIndex: 10
+      },
+      {
+        id: '20-info-backboard',
+        url: 'assets/images/templates/prop-card/20-info-backboard.png',
+        x: 0,
+        y: 0,
+        width: 898,
+        height: 1371,
+        zIndex: 20
+      },
+      {
+        id: '30-hexdeco',
+        url: 'assets/images/templates/prop-card/30-hexdeco.png',
+        x: 0,
+        y: 0,
+        width: 898,
+        height: 1371,
+        zIndex: 30
+      },
+      {
+        id: '40-info-bg',
+        url: 'assets/images/templates/prop-card/40-info-bg.png',
+        x: 0,
+        y: 0,
+        width: 898,
+        height: 1371,
+        zIndex: 40
+      },
+      {
+        id: '50-basic-info',
+        url: 'assets/images/templates/prop-card/50-basic-info.png',
+        x: 0,
+        y: 0,
+        width: 898,
+        height: 1371,
+        zIndex: 50
+      },
+      {
+        id: '52-init-text',
+        url: 'assets/images/templates/prop-card/52-init-text.png',
+        x: 0,
+        y: 0,
+        width: 898,
+        height: 1371,
+        zIndex: 52
+      },
+            {
+        id: '60-frame',
+        url: 'assets/images/templates/prop-card/60-frame.png',
+        x: 0,
+        y: 0,
+        width: 898,
+        height: 1371,
+        zIndex: 60
+      }
+    ],
+    textAreas: [
+      { 
+        id: 'card-name', 
+        x: 300, 
+        y: 520, 
+        width: 500, 
+        height: 100, 
+        placeholder: '卡牌名称', 
+        fontFamily: 'SSZHJT',
+        fontSize: 75, 
+        textColor: '#000000ff',
+        align: 'left', 
+        layer: 'default',
+        hasBackground: false,
+        lockPosition: 'top',
+      },
+      {
+        id: 'card-cost', 
+        x: 240, 
+        y: 705, 
+        width: 100, 
+        height: 90, 
+        placeholder: '卡牌消耗', 
+        fontFamily: 'FZZHYJF',
+        fontSize: 70, 
+        textColor: '#000000ff',
+        align: 'left', 
+        layer: 'default',
+        hasBackground: false,
+        lockPosition: 'top',
+      },
+      {
+        id: 'uses-times', 
+        x: 720, 
+        y: 705, 
+        width: 100, 
+        height: 90, 
+        placeholder: '使用次数', 
+        fontFamily: 'FZZHYJF',
+        fontSize: 70, 
+        textColor: '#000000ff',
+        align: 'left', 
+        layer: 'default',
+        hasBackground: false,
+        lockPosition: 'top',
+      },
+      { 
+        id: 'card-info', 
+        x: 110, 
+        y: 820, 
+        width: 680, 
+        height: 465, 
+        placeholder: '卡牌描述', 
+        fontSize: 35, 
+        align: 'left', 
+        layer: 'default',
+        hasBackground: false,
+        lockPosition: 'top',
+      },
+    ],
+    imageAreas: [
+      { 
+        id: 'card-illustration', 
+        x: 75, 
+        y: 75, 
+        width: 750, 
+        height: 500, 
+        placeholder: '卡牌插图',
+        shape: 'rectangle', 
+        layer: 'cardPicture'
       }
     ]
   },

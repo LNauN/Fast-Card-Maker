@@ -43,21 +43,6 @@ const UIManager = (function() {
     }
   }
 
-  // 添加切换指示器显示状态的方法
-  function toggleIndicators() {
-      const isHidden = elements.editableAreasOverlay.classList.contains('hidden');
-      
-      if (isHidden) {
-          // 显示指示器
-          elements.editableAreasOverlay.classList.remove('hidden');
-          elements.toggleIndicatorsBtn.innerHTML = '<i class="fa fa-eye-slash mr-2"></i>隐藏指示器';
-      } else {
-          // 隐藏指示器
-          elements.editableAreasOverlay.classList.add('hidden');
-          elements.toggleIndicatorsBtn.innerHTML = '<i class="fa fa-eye mr-2"></i>显示指示器';
-      }
-  }
-
   /**
    * 设置覆盖层容器样式
    */

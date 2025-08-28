@@ -126,7 +126,7 @@
                             <i class="fa fa-eye text-primary mr-2"></i>预览
                         </h2>
                         <div class="text-sm text-gray-600" id="cardDimensions">
-                            尺寸: -- × -- px
+                            尺寸: -- x -- px
                         </div>
                     </div>
                     
@@ -137,11 +137,12 @@
                     
                     <!-- 画布容器 -->
                     <div class="relative flex justify-center items-center bg-gray-100 p-4 rounded-lg min-h-[400px]">
-                        <canvas id="cardCanvas" class="max-w-full max-h-[600px] shadow-md"></canvas>
-                        <div id="editableAreasOverlay" class="absolute top-4 left-4 pointer-events-none"></div>
-                        <div id="noTemplateSelected" class="text-center text-gray-500">
-                            <i class="fa fa-image text-4xl mb-2"></i>
-                            <p>请从左侧选择一个模板</p>
+                        <canvas id="cardCanvas" class="max-w-full max-h-full shadow-md"></canvas>
+                        <div id="editableAreasOverlay" class="absolute top-4 left-4 pointer-events-none">
+                            <div id="noTemplateSelected" class="text-center text-gray-500">
+                                <i class="fa fa-image text-4xl mb-2"></i>
+                                <p>请从左侧选择一个模板</p>
+                            </div>
                         </div>
                     </div>
                 </div>
