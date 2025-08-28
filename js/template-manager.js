@@ -94,11 +94,10 @@ const TemplateManager = (function() {
     // 更新当前模板
     state.currentTemplate = template;
     
-    // 触发模板选择事件
-    eventBus.emit('templateSelected', template);
-
-    // 新增：自动加载选中模板的图层
-    loadTemplateLayers(template);
+    loadTemplateLayers(template).then(() => {
+      // 图层加载完成后再触发模板选择事件（确保图片alpha通道已就绪）
+      eventBus.emit('templateSelected', template);
+    });
   }
   
   // 加载模板图层
@@ -129,14 +128,25 @@ const TemplateManager = (function() {
         
         const img = new Image();
         img.crossOrigin = 'Anonymous';
-        img.onload = () => {
+        // 关键修复：等待图片完全解码（包括alpha通道）
+        img.decode().then(() => {
           state.templateLayers.push({...layer, image: img});
           resolve();
-        };
-        img.onerror = () => {
-          console.warn(`图层加载失败: ${layer.url}`);
-          resolve(); // 即使单个图层失败，仍继续加载其他图层
-        };
+        }).catch(() => {
+          // 解码失败时降级使用onload
+          img.onload = () => {
+            state.templateLayers.push({...layer, image: img});
+            resolve();
+          };
+          img.onerror = () => {
+            console.warn(`图层加载失败: ${layer.url}`);
+            resolve();
+          };
+          // 如果decode失败，手动触发加载
+          if (!img.complete) {
+            img.src = layer.url;
+          }
+        });
         img.src = layer.url;
       });
     });
