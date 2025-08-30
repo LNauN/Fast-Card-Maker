@@ -415,7 +415,7 @@ window.templateData = [
         height: 1371,
         zIndex: 52
       },
-            {
+      {
         id: '60-frame',
         url: 'assets/images/templates/basic-card/60-frame.png',
         x: 0,
@@ -572,7 +572,7 @@ window.templateData = [
         height: 1371,
         zIndex: 52
       },
-            {
+      {
         id: '60-frame',
         url: 'assets/images/templates/effect-card/60-frame.png',
         x: 0,
@@ -729,7 +729,7 @@ window.templateData = [
         height: 1371,
         zIndex: 52
       },
-            {
+      {
         id: '60-frame',
         url: 'assets/images/templates/prop-card/60-frame.png',
         x: 0,
@@ -808,6 +808,143 @@ window.templateData = [
         height: 500, 
         placeholder: '卡牌插图',
         shape: 'rectangle', 
+        layer: 'cardPicture'
+      }
+    ]
+  },
+
+  {
+    id: 'event-card',
+    name: '事件卡牌',
+    thumbnailUrl: '/assets/images/templates/event-card/thumbnail.png',
+    width: 898,
+    height: 1371,
+    bleedBackground: {
+      url: '/assets/images/templates/event-card/bleed-bg.png', // 主背景图路径
+      fillMode: 'cover', // 填充模式：cover（覆盖）/ contain（包含）
+      repeat: false // 是否重复填充（可选）
+    },
+    contentLayers: {
+      cardPicture: 8,
+      default: 55,
+    },
+    layers: [
+      {
+        id: '1-bg',
+        url: '/assets/images/templates/event-card/1-bg.png',
+        x: 0,
+        y: 0,
+        width: 898,
+        height: 1371,
+        zIndex: 1
+      },
+      {
+        id: '5-picture-frame-bottom',
+        url: '/assets/images/templates/event-card/5-picture-frame-bottom.png',
+        x: 0,
+        y: 0,
+        width: 898,
+        height: 1371,
+        zIndex: 5
+      },
+      {
+        id: '10-picture-frame-top',
+        url: '/assets/images/templates/event-card/10-picture-frame-top.png',
+        x: 0,
+        y: 0,
+        width: 898,
+        height: 1371,
+        zIndex: 10
+      },
+      {
+        id: '20-info-backboard',
+        url: 'assets/images/templates/event-card/20-info-backboard.png',
+        x: 0,
+        y: 0,
+        width: 898,
+        height: 1371,
+        zIndex: 20
+      },
+      {
+        id: '30-hexdeco',
+        url: 'assets/images/templates/event-card/30-hexdeco.png',
+        x: 0,
+        y: 0,
+        width: 898,
+        height: 1371,
+        zIndex: 30
+      },
+      {
+        id: '40-info-bg',
+        url: 'assets/images/templates/event-card/40-info-bg.png',
+        x: 0,
+        y: 0,
+        width: 898,
+        height: 1371,
+        zIndex: 40
+      },
+      {
+        id: '50-basic-info',
+        url: 'assets/images/templates/event-card/50-basic-info.png',
+        x: 0,
+        y: 0,
+        width: 898,
+        height: 1371,
+        zIndex: 50
+      },
+      {
+        id: '52-init-text',
+        url: 'assets/images/templates/event-card/52-init-text.png',
+        x: 0,
+        y: 0,
+        width: 898,
+        height: 1371,
+        zIndex: 52
+      },
+    ],
+    textAreas: [
+      { 
+        id: 'event-name', 
+        x: 0, 
+        y: 555, 
+        width: 898, 
+        height: 100, 
+        placeholder: '事件名称', 
+        fontFamily: 'SSZHJT',
+        fontSize: 70, 
+        textColor: '#ffffffff',
+        align: 'center', 
+        layer: 'default',
+        hasBackground: false,
+        lockPosition: 'top',
+      },
+      { 
+        id: 'event-info', 
+        x: 90, 
+        y: 730, 
+        width: 720, 
+        height: 550, 
+        placeholder: '事件描述', 
+        fontSize: 35, 
+        align: 'center', 
+        layer: 'default',
+        hasBackground: false,
+        lockPosition: 'top',
+      },
+    ],
+    imageAreas: [
+      { 
+        id: 'card-illustration', 
+        x: 40, 
+        y: 180, 
+        width: 820, 
+        height: 470, 
+        trapezoidParams: { 
+          topWidth: 820,
+          bottomWidth: 550
+        },
+        placeholder: '卡牌插图',
+        shape: 'trapezoid', 
         layer: 'cardPicture'
       }
     ]

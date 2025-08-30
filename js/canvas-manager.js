@@ -551,12 +551,18 @@ const CanvasManager = (function() {
    * @param {Object} params - 梯形参数
    */
   function createTrapezoidPath(x, y, width, height, params) {
-    const topWidth = params?.topWidth || width * 0.8;
+    // 上底宽度：优先用配置值，否则默认80%宽度
+    const topWidth = params?.topWidth || width;
+    // 下底宽度
+    const bottomWidth = params?.bottomWidth || width;
+
     const topOffset = (width - topWidth) / 2;
-    state.canvasCtx.moveTo(x + topOffset, y);
-    state.canvasCtx.lineTo(x + width - topOffset, y);
-    state.canvasCtx.lineTo(x + width, y + height);
-    state.canvasCtx.lineTo(x, y + height);
+    const bottomOffset = (width - bottomWidth) / 2;
+    
+    state.canvasCtx.moveTo(x + topOffset, y); // 上底左
+    state.canvasCtx.lineTo(x + width - topOffset, y); // 上底右
+    state.canvasCtx.lineTo(x + width - bottomOffset, y + height); // 下底右
+    state.canvasCtx.lineTo(x + bottomOffset, y + height); // 下底左
     state.canvasCtx.closePath();
   }
 
